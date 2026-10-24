@@ -7,6 +7,7 @@ from flask import Flask, request, jsonify
 app = Flask("Super Kart Predictor")
 
 # Load the trained model
+saved_model_path = os.path.join(os.path.dirname(__file__), 'super_kart_model_v1_0.joblib')
 model = joblib.load(saved_model_path)
 
 
@@ -22,7 +23,7 @@ def predict_sales():
     # Get JSON data from the request
     data = request.get_json()
 
-sample = {
+    sample = {
         'Product_Id': data['Product_Id'],
         'Product_Weight': data['Product_Weight'],
         'Product_Sugar_Content': data['Product_Sugar_Content'],

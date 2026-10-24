@@ -1,11 +1,12 @@
 
+import os
 import streamlit as st
 import pandas as pd
 import requests
 
 
 # Base URL of the Flask backend
-BACKEND_URL = "http://backend:7860"
+BACKEND_URL = os.getenv("BACKEND_URL", "http://backend:7860").rstrip("/")
 
 # Streamlit UI for Boston Housing Price Prediction
 st.title("Super Kart Prediction App")
@@ -92,19 +93,20 @@ input_data = {
 }
 
 if st.button("Predict", type='primary'):
-    # Replace with your deployed backend URL
-    response = requests.post(
-        # "https://{BACKEND_URL}/v1/house",
-        f"{BACKEND_URL}/v1/predict",
-        json=input_data
-    )
-
-    if response.status_code == 200:
+    try:
+        response = requests.post(
+            f"{BACKEND_URL}/v1/predict",
+            json=input_data,
+            timeout=30,
+        )
+        response.raise_for_status()
         result = response.json()
-        predicted_sales = result["Product_Store_Sales_Total"]
+        predicted_sales = result["Predicted_Sales"]
         st.success(f"Predicted Sales Value: **${predicted_sales * 1000:.2f}**")
-    else:
-        st.error("Error in API request")
+    except requests.exceptions.RequestException as error:
+        st.error(f"Could not reach the prediction API at {BACKEND_URL}: {error}")
+    except (KeyError, ValueError) as error:
+        st.error(f"Invalid response from the prediction API: {error}")
 
 
 # Batch Prediction
@@ -114,14 +116,17 @@ file = st.file_uploader("Upload CSV file", type=["csv"])
 
 if file is not None:
     if st.button("Predict for Batch", type='primary'):
-        response = requests.post(
-            f"{BACKEND_URL}/v1/predictbatch",
-            files={"file": file}
-        )
-
-        if response.status_code == 200:
+        try:
+            response = requests.post(
+                f"{BACKEND_URL}/v1/predictbatch",
+                files={"file": file},
+                timeout=30,
+            )
+            response.raise_for_status()
             result = response.json()
             st.header("Batch Prediction Results")
             st.write(result)
-        else:
-            st.error("Error in API request")
+        except requests.exceptions.RequestException as error:
+            st.error(f"Could not reach the prediction API at {BACKEND_URL}: {error}")
+        except ValueError as error:
+            st.error(f"Invalid response from the prediction API: {error}")
