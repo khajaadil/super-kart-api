@@ -6,7 +6,7 @@ import requests
 
 
 # Base URL of the Flask backend
-BACKEND_URL = os.getenv("BACKEND_URL", "http://backend:7860").rstrip("/")
+BACKEND_URL = os.getenv("BACKEND_URL", "http://172.18.0.1:7860").rstrip("/")
 
 # Streamlit UI for Boston Housing Price Prediction
 st.title("Super Kart Prediction App")
