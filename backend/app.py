@@ -24,9 +24,10 @@ def predict_sales():
 
 sample = {
         'Product_Id': data['Product_Id'],
-        'ZN': data['Product_Weight'],
+        'Product_Weight': data['Product_Weight'],
         'Product_Sugar_Content': data['Product_Sugar_Content'],
         'Product_Allocated_Area': data['Product_Allocated_Area'],
+        'Product_Type': data['Product_Type'],
         'Product_MRP': data['Product_MRP'],     
         'Store_Id': data['Store_Id'],
         'Store_Establishment_Year': data['Store_Establishment_Year'],
@@ -56,7 +57,7 @@ def predict_sales_batch():
     predictions = model.predict(input_data).tolist()
 
     # Add predictions to the DataFrame
-    input_data['Predicted_Sales'] = predictions
+    input_data['Product_Store_Sales_Total'] = predictions
 
     # Convert results to dictionary
     result = input_data.to_dict(orient="records")
