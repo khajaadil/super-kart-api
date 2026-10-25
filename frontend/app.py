@@ -12,13 +12,17 @@ BACKEND_URL = os.getenv("BACKEND_URL", "http://172.18.0.1:7860").rstrip("/")
 st.title("Super Kart Prediction App")
 st.write("This app predicts the total sales.")
 
-Product_Id = st.text_input("Product_Id")
 Product_Weight = st.text_input("Product_Weight")
 Product_Allocated_Area = st.text_input("Product_Allocated_Area")
 Product_MRP = st.text_input("Product_MRP")
-Store_Establishment_Year = st.text_input("Store_Establishment_Year")
+Store_Age_Years = st.text_input("Store_Age_Years")
+
 
 # Categorical feature
+Product_Id_char = st.selectbox(
+    "Product Id Char",
+    ['FD', 'NC', 'DR']
+)
 # Product Sugar Content
 Product_Sugar_Content = st.selectbox(
     "Product Sugar Content",
@@ -26,25 +30,13 @@ Product_Sugar_Content = st.selectbox(
 )
 
 # Product Type
-Product_Type = st.selectbox(
-    "Product Type",
+Product_Type_Category = st.selectbox(
+    "Product_Type_Category",
     [
-        "Baking Goods",
-        "Breads",
-        "Breakfast",
-        "Canned",
-        "Dairy",
-        "Frozen Foods",
-        "Fruits and Vegetables",
-        "Hard Drinks",
-        "Health and Hygiene",
-        "Household",
-        "Meat",
-        "Others",
-        "Seafood",
-        "Snack Foods",
-        "Soft Drinks",
-        "Starchy Foods"
+        "Perishables",
+        "Non Perishables",
+        "Others"
+        
     ]
 )
 
@@ -79,17 +71,17 @@ Store_Type = st.selectbox(
 
 # Create input DataFrame
 input_data = {
-    'Product_Id': Product_Id,
     'Product_Weight': Product_Weight,
     'Product_Sugar_Content': Product_Sugar_Content,
     'Product_Allocated_Area': Product_Allocated_Area,
-    'Product_Type': Product_Type,
+    'Product_Id_char': Product_Id_char,
     'Product_MRP': Product_MRP,
     'Store_Id': Store_Id,
-    'Store_Establishment_Year': Store_Establishment_Year,
+    'Store_Age_Years': Store_Age_Years,
     'Store_Size': Store_Size,
     'Store_Location_City_Type': Store_Location_City_Type,
     'Store_Type': Store_Type,
+    'Product_Type_Category':Product_Type_Category
 }
 
 if st.button("Predict", type='primary'):
