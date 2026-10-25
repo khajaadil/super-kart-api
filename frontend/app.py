@@ -91,10 +91,14 @@ if st.button("Predict", type='primary'):
             json=input_data,
             timeout=30,
         )
+        
+
         response.raise_for_status()
         result = response.json()
+
+
         predicted_sales = result["Predicted_Sales"]
-        st.success(f"Predicted Sales Value: **${predicted_sales * 1000:.2f}**")
+        st.success(f"Predicted Sales Value: **{predicted_sales * 1000:.2f}**")
     except requests.exceptions.RequestException as error:
         st.error(f"Could not reach the prediction API at {BACKEND_URL}: {error}")
     except (KeyError, ValueError) as error:

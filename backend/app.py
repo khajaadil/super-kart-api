@@ -2,6 +2,10 @@ import os
 import joblib
 import pandas as pd
 from flask import Flask, request, jsonify
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 # Initialize Flask app
 app = Flask("Super Kart Predictor")
@@ -22,6 +26,8 @@ def home():
 def predict_sales():
     # Get JSON data from the request
     data = request.get_json()
+    app.logger.info("3333333")
+    app.logger.info(data)
     sample = {
         'Product_Id_char': data['Product_Id_char'],
         'Product_Weight': data['Product_Weight'],
@@ -37,10 +43,11 @@ def predict_sales():
     }
     # Convert the input data into a DataFrame
     input_data = pd.DataFrame([sample])
-
+    app.logger.info("*********")
+    app.logger.info(input_data.iloc[0])
     # Make a prediction using the trained model
     prediction = model.predict(input_data).tolist()[0]
-
+    app.logger.info("Prediction completed: %s", prediction)
     # Return the prediction as a JSON response
     return jsonify({'Predicted_Sales': prediction})
 
