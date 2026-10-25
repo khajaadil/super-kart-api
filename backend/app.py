@@ -11,7 +11,7 @@ logger.setLevel(logging.INFO)
 app = Flask("Super Kart Predictor")
 
 # Load the trained model
-saved_model_path = os.path.join(os.path.dirname(__file__), 'super_kart_model_v1_0.joblib')
+saved_model_path = os.path.join(os.path.dirname(__file__), 'super_kart_model_v3_0.joblib')
 model = joblib.load(saved_model_path)
 
 
